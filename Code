@@ -1,0 +1,44 @@
+# Load required packages
+library(tidyverse)
+library(lavaan)
+
+# Load and preprocess the data
+MIDUS <- read.csv("MIDUS.csv", na.strings = c("", "NA")) %>%
+  select(1:4, 6:31) %>%
+  mutate(
+    sex = ifelse(sex == "Male", 1, 2),
+    race = ifelse(race == "White", 1, ifelse(race == "Black", 2, 3)),
+    educ = ifelse(educ == 1, "Less than high school", ifelse(educ == 2, "High school", ifelse(educ == 3, "Some college", "College graduate or higher")))
+  )
+
+# Exploratory Data Analysis
+summary(MIDUS)
+cor(MIDUS[, 5:27])
+ggplot(MIDUS, aes(x = age, y = posaff, color = sex)) +
+  geom_point() +
+  ggtitle("Age vs. Positive Affect, by Sex")
+
+# Model Specification
+model <- "
+  # Measurement model
+  socsup =~ socsup1 + socsup2 + socsup3 + socsup4
+  deppron =~ deppron1 + deppron2 + deppron3 + deppron4 + deppron5
+  posaff =~ posaff1 + posaff2 + posaff3 + posaff4 + posaff5
+  # Structural model
+  deppron ~ socsup
+  posaff ~ socsup
+"
+
+# Model Estimation
+fit <- sem(model, data = MIDUS)
+
+# Model Evaluation
+summary(fit)
+fitmeasures(fit)
+
+# Interpretation and Visualization
+coef(fit)
+pathDiagram(fit, main = "SEM of Social Support and Mental Health Outcomes")
+
+# Conclusion
+cat("This project aims to investigate the relationship between social support and mental health outcomes using structural equation modeling (SEM) in R, based on data from the National Survey of Midlife Development in the United States (MIDUS). By identifying the factors that influence mental health outcomes, this research can inform the development of interventions to promote mental health and well-being.")
