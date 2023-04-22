@@ -41,4 +41,6 @@ coef(fit)
 pathDiagram(fit, main = "SEM of Social Support and Mental Health Outcomes")
 
 # Conclusion
-cat("This project aims to investigate the relationship between social support and mental health outcomes using structural equation modeling (SEM) in R, based on data from the National Survey of Midlife Development in the United States (MIDUS). By identifying the factors that influence mental health outcomes, this research can inform the development of interventions to promote mental health and well-being.")
+cat("This project aims to investigate the relationship between social support and mental health outcomes using structural equation modeling (SEM)
+in R, based on data from the National Survey of Midlife Development in the United States (MIDUS). By identifying the factors that influence 
+mental health outcomes, this research can inform the development of interventions to promote mental health and well-being.")
